@@ -2,12 +2,10 @@ require 'yaml'
 require 'active_support/core_ext/hash'
 
 class Ruby::Search::Indexer
+  include Ruby::Search::Indexable
   attr_accessor :text
   INDEX_STORE = 'index.yml'
 
-  def initialize
-    @current_index = File.exist?(INDEX_STORE) ? YAML.load(IO.read(INDEX_STORE)) : {}
-  end
 
   def index
     unless ARGV[0]

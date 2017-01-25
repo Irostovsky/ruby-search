@@ -1,10 +1,5 @@
 class Ruby::Search::Base
-
-  require 'pp'
-
-  def initialize
-    @current_index = File.exist?(Ruby::Search::Indexer::INDEX_STORE) ? YAML.load(IO.read(Ruby::Search::Indexer::INDEX_STORE)) : {}
-  end
+  include Ruby::Search::Indexable
 
   def search
     unless ARGV.any?
