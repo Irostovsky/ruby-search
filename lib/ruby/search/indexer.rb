@@ -1,3 +1,5 @@
+require 'yaml'
+
 class Ruby::Search::Indexer
   attr_accessor :text
   def echo
@@ -15,14 +17,14 @@ class Ruby::Search::Indexer
       return p "File #{file_name} does not exists"
     end
 
-    @text = IO.read file_name
+    p @text = IO.read(file_name)
     arr = @text.split(/\W+/)
-    tokens = arr.length.times.map{|i| arr.length.times.map{|j| arr[i..j].join(' ') unless i > j}}.flatten.compact
-    p tokens
+    p tokens = arr.length.times.map{|i| arr.length.times.map{|j| arr[i..j].join(' ') unless i > j}}.flatten.compact
+    p hash = tokens.inject({}){|h, s| h[s] ||= {file_name => 0}; h[s][file_name] += 1; h }
+    File.open("index.yml","w") do |file|
+       file.write hash.to_yaml
+    end
   end
 
-  def fetch_text
-    @text ||= "this is: a document, yo"
-    p @text
-  end
+
 end
