@@ -1,8 +1,12 @@
 # Ruby::Search
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/ruby/search`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+How to use this gem:
+1. install bundler if not instaled( bundler init)
+2. Add gem 'ruby-search', git: 'git@github.com:Irostovsky/ruby-search.git' to the Gemfile
+3. run bundle install
+4. in the folder add some text files to test.
+5. run bundle exec index %{filename}. For each file separatelly. Check that index.yml is added and changed
+6. to search run bundle exec search my super string
 
 ## Installation
 
