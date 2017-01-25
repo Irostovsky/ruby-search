@@ -9,10 +9,6 @@ class Ruby::Search::Indexer
     @current_index = File.exist?(INDEX_STORE) ? YAML.load(IO.read(INDEX_STORE)) : {}
   end
 
-  def echo
-    puts 'Test'
-  end
-
   def index
     unless ARGV[0]
       return p 'No file path passed'
