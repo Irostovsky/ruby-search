@@ -5,7 +5,17 @@ class Ruby::Search::Indexer
   end
 
   def index
-    fetch_text
+    unless ARGV[0]
+      return p 'No file path passed'
+    end
+
+    file_name = ARGV[0]
+
+    unless File.exist?(file_name)
+      return p "File #{file_name} does not exists"
+    end
+
+    @text = IO.read file_name
     arr = @text.split(/\W+/)
     tokens = arr.length.times.map{|i| arr.length.times.map{|j| arr[i..j].join(' ') unless i > j}}.flatten.compact
     p tokens
