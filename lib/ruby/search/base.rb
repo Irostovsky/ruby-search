@@ -12,7 +12,7 @@ class Ruby::Search::Base
     end
     ARGV.each_with_index do |keyword, i|
       puts ""
-      puts "Searching for #{keyword} ..."
+      puts "Searching for '#{keyword}' ..."
        if match = @current_index[keyword]
           puts "    Found in:"
           match.sort_by {|_key, value| -value}.to_h.each do |name, count|
