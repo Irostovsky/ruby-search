@@ -1,6 +1,7 @@
 # Ruby::Search
 
 How to use this gem:
+
 1. install bundler if not instaled( bundler init)
 2. Add gem 'ruby-search', git: 'git@github.com:Irostovsky/ruby-search.git' to the Gemfile
 3. run bundle install
