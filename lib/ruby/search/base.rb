@@ -41,13 +41,21 @@ class Ruby::Search::Base
 private
 
   def keywords arr
-    [nil, *arr, nil].each_cons(3).map do |group|
-      if and? group[1]
-        [group.first, group.last].compact
+    res = []
+    and_marker = false
+    arr.each_with_index do |i, counter|
+      if and? i
+        and_marker = true unless counter.zero?
       else
-        group[1] unless and?(group.first) || and?(group.last)
+        if and_marker
+          res << [res.pop, i].flatten
+        else
+          res << i
+        end
+        and_marker = false
       end
-    end.compact
+    end
+    res
   end
 
   def and? str
