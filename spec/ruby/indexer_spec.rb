@@ -40,4 +40,30 @@ RSpec.describe Ruby::Search::Indexer do
       })
     end
   end
+
+  describe '#index' do
+    it 'should return error' do
+      indexer = described_class.new
+      file_stub = Object.new
+      expect(file_stub).to receive(:valid?).and_return false
+      expect(file_stub).to receive(:errors).and_return 'some errors'
+      expect(Ruby::Search::IndexedFile).to receive(:new).and_return(file_stub)
+
+      expect(indexer).to_not receive(:save)
+      indexer.index
+    end
+
+    it 'should call methods for corect process' do
+      indexer = described_class.new
+      file_stub = Object.new
+      expect(file_stub).to receive(:valid?).and_return true
+      expect(file_stub).to receive(:index).and_return :index
+      expect(file_stub).to_not receive(:errors)
+      expect(Ruby::Search::IndexedFile).to receive(:new).and_return(file_stub)
+
+      expect(indexer).to receive(:merge_index).with(:index).and_return :merged_index
+      expect(indexer).to receive(:save).with(:merged_index)
+      indexer.index
+    end
+  end
 end
