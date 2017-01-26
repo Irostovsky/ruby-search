@@ -20,4 +20,24 @@ RSpec.describe Ruby::Search::Indexer do
       expect(YAML.load(IO.read(@file_name))).to eq hash
     end
   end
+
+  describe '#merge_index' do
+    it 'should merge with empty current hash' do
+      indexer = described_class.new
+      indexer.instance_variable_set :@current_index, {}
+      hash = {'str' => {'file' => 1}, 'str2' => {'file2' => 1, 'file' => 2}}
+      expect(indexer.send(:merge_index, hash)).to eq hash
+    end
+
+    it 'should merge with not empty curent hash' do
+      indexer = described_class.new
+      indexer.instance_variable_set :@current_index, {'str' => {'file1' => 1}, 'str2' => {'file1' => 1}}
+      hash = {'str' => {'file1' => 1, 'file2' => 2}, 'str2' => {'file2' => 2}, 'str3' => {'file' => 1}}
+      expect(indexer.send(:merge_index, hash)).to eq({
+        'str' => {'file1' => 1, 'file2' => 2},
+        'str2' => {'file2' => 2, 'file1' => 1},
+        'str3' => {'file' => 1}
+      })
+    end
+  end
 end
