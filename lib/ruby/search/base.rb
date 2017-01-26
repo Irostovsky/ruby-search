@@ -3,24 +3,19 @@ class Ruby::Search::Base
 
   def search
     return puts 'No search keywords passed' unless ARGV.any?
+    print_result do_search ARGV
+  end
 
-    keywords(ARGV).each_with_index do |keyword, i|
+private
+
+  def print_result data
+    data.each_with_index do |item, i|
       puts ""
-      keyword_str = keyword.join(" #{Ruby::Search.configuration.and_symbol} ")
-      puts "#{i+1}. Searching for '#{keyword_str}' ..."
-      matches = keyword.map{|k| @current_index[k]}
-      if matches.compact.length == keyword.length
-        keys = matches.map(&:keys).inject(:&)
-        if keys.any?
-          sorted_matches = matches.sort_by{|h| -keys.map{|k| h[k]}.inject(:+)}
-          match = Hash[keys.zip(sorted_matches.first.values_at(*keys))]
-
-          puts "   Found in:"
-          match.sort_by {|key, value| -value}.to_h.each do |name, count|
-            puts "        #{name} : #{count}"
-          end
-        else
-          puts "No matches found."
+      puts "#{i+1}. Searching for '#{item.shift}' ..."
+      if item.any?
+        puts "   Found in:"
+        item.each do |file, count|
+          puts "        #{file} : #{count}"
         end
       else
         puts "No matches found."
@@ -28,7 +23,24 @@ class Ruby::Search::Base
     end
   end
 
-private
+  def do_search args
+    keywords(args).map do |keyword|
+      keyword_str = keyword.join(" #{Ruby::Search.configuration.and_symbol} ")
+      res = [keyword_str]
+      matches = keyword.map{|k| @current_index[k]}
+      if matches.compact.length == keyword.length
+        keys = matches.map(&:keys).inject(:&)
+        if keys.any?
+          sorted_matches = matches.sort_by{|h| -keys.map{|k| h[k]}.inject(:+)}
+          match = Hash[keys.zip(sorted_matches.first.values_at(*keys))]
+          match.sort_by {|key, value| -value}.to_h.each do |name, count|
+            res << [name, count]
+          end
+        end
+      end
+      res
+    end
+  end
 
   def keywords arr
     res = []
