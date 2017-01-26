@@ -47,11 +47,7 @@ private
       if and? i
         and_marker = true unless counter.zero?
       else
-        if and_marker
-          res << [res.pop, i].flatten
-        else
-          res << i
-        end
+        and_marker ? res << [res.pop, i].flatten : res << i
         and_marker = false
       end
     end
