@@ -24,8 +24,8 @@ module Ruby
       private
 
       def extract_tokens text
-        text.split(/\W+/)
-        # tokens = arr.length.times.map{|i| arr.length.times.map{|j| arr[i..j].join(' ') unless i > j}}.flatten.compact
+        arr = text.split(/\W+/)
+        arr.length.times.map{|i| arr.length.times.map{|j| arr[i..j].join(' ') unless i > j}}.flatten.compact
       end
 
       def hash_view arr

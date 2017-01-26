@@ -39,7 +39,8 @@ RSpec.describe Ruby::Search do
   describe '#extract_tokens' do
     it 'should split by space' do
       indexed_file = Ruby::Search::IndexedFile.new
-      expect(indexed_file.send :extract_tokens, 'my super:  string').to eq ['my', 'super', 'string']
+      # expect(indexed_file.send :extract_tokens, 'my super:  string').to eq ['my', 'super', 'string']
+      expect(indexed_file.send :extract_tokens, 'my super:  string').to eq ["my", "my super", "my super string", "super", "super string", "string"]
     end
   end
 
