@@ -16,11 +16,12 @@ module Ruby
     end
 
     class Configuration
-      attr_accessor :index_file_name
+      attr_accessor :index_file_name, :and_symbol
     end
 
     Ruby::Search.configure  do |config|
       config.index_file_name = 'index.yml'
+      config.and_symbol = 'AND'
     end
   end
 end
