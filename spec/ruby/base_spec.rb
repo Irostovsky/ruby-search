@@ -19,16 +19,16 @@ RSpec.describe Ruby::Search::Base do
 
   describe '#keywords' do
     it 'normal case' do
-      expect(described_class.new.send(:keywords, ['find', 'this'])).to eq ['find', 'this']
+      expect(described_class.new.send(:keywords, ['find', 'this'])).to eq [['find'], ['this']]
     end
 
     it 'sentence passed' do
-      expect(described_class.new.send(:keywords, ['find me', 'this'])).to eq ['find me', 'this']
+      expect(described_class.new.send(:keywords, ['find me', 'this'])).to eq [['find me'], ['this']]
     end
 
     it 'AND query' do
       expect(described_class.new.send(:keywords, ['less', 'AND', 'sass'])).to eq [['less', 'sass']]
-      expect(described_class.new.send(:keywords, ['first' ,'less', 'AND', 'sass', 'last'])).to eq ['first', ['less', 'sass'], 'last']
+      expect(described_class.new.send(:keywords, ['first' ,'less', 'AND', 'sass', 'last'])).to eq [['first'], ['less', 'sass'], ['last']]
     end
 
     it 'AND query several times' do
@@ -42,11 +42,11 @@ RSpec.describe Ruby::Search::Base do
     end
 
     it 'ignore AND query in the start' do
-      expect(described_class.new.send(:keywords, ['AND', 'sass'])).to eq ['sass']
+      expect(described_class.new.send(:keywords, ['AND', 'sass'])).to eq [['sass']]
     end
 
     it 'ignore AND query in the end' do
-      expect(described_class.new.send(:keywords, ['less', 'AND'])).to eq ['less']
+      expect(described_class.new.send(:keywords, ['less', 'AND'])).to eq [['less']]
     end
   end
 end
