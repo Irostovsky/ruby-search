@@ -1,7 +1,8 @@
 module Ruby::Search::Indexable
 
   def initialize
-    @current_index = File.exist?(Ruby::Search::Indexer::INDEX_STORE) ? YAML.load(IO.read(Ruby::Search::Indexer::INDEX_STORE)) : {}
+    filename = Ruby::Search.configuration.index_file_name
+    @current_index = File.exist?(filename) ? YAML.load(IO.read(filename)) : {}
   end
 
 end
