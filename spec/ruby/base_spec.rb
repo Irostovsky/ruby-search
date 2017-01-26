@@ -35,6 +35,12 @@ RSpec.describe Ruby::Search::Base do
     #   expect(described_class.new.send(:keywords, ['less', 'AND', 'sass', 'AND', 'ruby'])).to eq [['less', 'sass', 'ruby']]
     # end
 
+    it 'AND query several groups' do
+      expect(described_class.new.send(:keywords, ['less', 'AND', 'sass', 'rails', 'AND', 'ruby'])).to eq(
+        [['less', 'sass'], ['rails', 'ruby']]
+      )
+    end
+
     it 'ignore AND query in the start' do
       expect(described_class.new.send(:keywords, ['AND', 'sass'])).to eq [['sass']]
       expect(described_class.new.send(:keywords, ['less', 'AND'])).to eq [['less']]

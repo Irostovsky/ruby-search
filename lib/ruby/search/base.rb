@@ -5,13 +5,12 @@ class Ruby::Search::Base
     unless ARGV.any?
       return p 'No search keywords passed'
     end
-    puts ARGV
     keywords(ARGV).each_with_index do |keyword, i|
       puts ""
       if keyword.is_a? Array
         keyword_str = keyword.join(" #{Ruby::Search.configuration.and_symbol} ")
         puts "Searching for '#{keyword_str}' ..."
-        p keys = keyword.map{|k| @current_index[k].try :keys}
+        keys = keyword.map{|k| @current_index[k].try :keys}
         if keys.compact.length == keyword.length
           match = keys.inject(:&)
           if match.any?
