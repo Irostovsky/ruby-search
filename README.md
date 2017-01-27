@@ -32,9 +32,6 @@ Or install it yourself as:
 
     $ gem install ruby-search
 
-## Usage
-
-TODO: Write usage instructions here
 
 ## Development
 
