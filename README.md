@@ -17,6 +17,13 @@ Add this line to your application's Gemfile:
 gem 'ruby-search'
 ```
 
+As to check file is binary we used: https://github.com/blackwinter/ruby-filemagic, please add native libs:
+
+* Debian/Ubuntu:: ```libmagic-dev```
+* Fedora/SuSE::   ```file-devel```
+* Gentoo::        ```sys-libs/libmagic```
+* OS X::          ```brew install libmagic```
+
 And then execute:
 
     $ bundle
