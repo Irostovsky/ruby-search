@@ -189,4 +189,25 @@ RSpec.describe Ruby::Search::Base do
     search.instance_variable_set :@current_index, index
     expect(search.send(:do_search, search_args)).to eq(block.call)
   end
+
+
+  describe '#print_result' do
+    let(:search){described_class.new}
+
+    it 'no results' do
+      expect(STDOUT).to receive(:puts).with('')
+      expect(STDOUT).to receive(:puts).with("1. Searching for 'rails' ...")
+      expect(STDOUT).to receive(:puts).with("No matches found.")
+      search.send(:print_result, [['rails']])
+    end
+
+    it 'not empty result' do
+      expect(STDOUT).to receive(:puts).with('')
+      expect(STDOUT).to receive(:puts).with("1. Searching for 'rails' ...")
+      expect(STDOUT).to receive(:puts).with("   Found in:")
+      expect(STDOUT).to receive(:puts).with("        file4 : 4")
+      expect(STDOUT).to receive(:puts).with("        file2 : 3")
+      search.send(:print_result, [['rails', ['file4', 4], ['file2', 3]]])
+    end
+  end
 end
