@@ -17,12 +17,13 @@ module Ruby
     end
 
     class Configuration
-      attr_accessor :index_file_name, :and_symbol
+      attr_accessor :index_file_name, :and_symbol, :sentence_words_count
     end
 
     Ruby::Search.configure  do |config|
       config.index_file_name = 'index.yml'
       config.and_symbol = 'AND'
+      config.sentence_words_count = 6
     end
   end
 end

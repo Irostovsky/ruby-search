@@ -192,7 +192,22 @@ RSpec.describe Ruby::Search::Base do
 
 
   describe '#print_result' do
-    let(:search){described_class.new}
+    before :each do
+      @old_value = Ruby::Search.configuration.sentence_words_count
+      Ruby::Search.configure  do |config|
+        config.sentence_words_count = 2
+      end
+    end
+
+    after :each do
+      Ruby::Search.configure  do |config|
+        config.sentence_words_count = @old_value
+      end
+    end
+
+    let(:search) do
+      described_class.new
+    end
 
     it 'no results' do
       expect(STDOUT).to receive(:puts).with('')
@@ -208,6 +223,14 @@ RSpec.describe Ruby::Search::Base do
       expect(STDOUT).to receive(:puts).with("        file4 : 4")
       expect(STDOUT).to receive(:puts).with("        file2 : 3")
       search.send(:print_result, [['rails', ['file4', 4], ['file2', 3]]])
+    end
+
+    it 'long word warning' do
+      expect(STDOUT).to receive(:puts).with('')
+      expect(STDOUT).to receive(:puts).with("1. Searching for 'rails super test' ...")
+      expect(STDOUT).to receive(:puts).with("WARNING: Too long sentence, 2 words are allowed")
+      expect(STDOUT).to receive(:puts).with("No matches found.")
+      search.send(:print_result, [['rails super test']])
     end
   end
 end

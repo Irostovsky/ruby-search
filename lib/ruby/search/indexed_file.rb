@@ -31,7 +31,12 @@ module Ruby
 
       def extract_tokens text
         arr = text.split(/\W+/)
-        arr.length.times.map{|i| arr.length.times.map{|j| arr[i..j].join(' ') unless i > j}}.flatten.compact
+        word_count = Ruby::Search.configuration.sentence_words_count
+        arr.length.times.map do |i|
+          arr.length.times.map do |j|
+            [i, j]; arr[i..j].join(' ') if (j - i).between?(0, word_count - 1)
+          end
+        end.flatten.compact
       end
 
       def hash_view arr

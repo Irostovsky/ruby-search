@@ -11,13 +11,17 @@ private
   def print_result data
     data.each_with_index do |item, i|
       puts ""
-      puts "#{i+1}. Searching for '#{item.shift}' ..."
+      keyword = item.shift
+      puts "#{i+1}. Searching for '#{keyword}' ..."
       if item.any?
         puts "   Found in:"
         item.each do |file, count|
           puts "        #{file} : #{count}"
         end
       else
+        if keyword.split(/\W+/).length > Ruby::Search.configuration.sentence_words_count
+          puts "WARNING: Too long sentence, #{Ruby::Search.configuration.sentence_words_count} words are allowed"
+        end
         puts "No matches found."
       end
     end
