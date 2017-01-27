@@ -34,6 +34,14 @@ RSpec.describe Ruby::Search do
       expect(indexed_file.name).to eq other_file
       expect(indexed_file.errors).to eq ["File #{other_file} does not exists"]
     end
+
+    it 'should be not valid if file is not text file' do
+      bin_file = 'spec/tmp/my.torrent'
+      indexed_file = Ruby::Search::IndexedFile.new bin_file
+      expect(indexed_file).to_not be_valid
+      expect(indexed_file.name).to eq bin_file
+      expect(indexed_file.errors).to eq ["File #{bin_file} is not text file"]
+    end
   end
 
   describe '#extract_tokens' do

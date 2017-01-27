@@ -1,6 +1,8 @@
 module Ruby
   module Search
     class IndexedFile
+      include Ruby::Search::Utils::MimeDetector
+
       attr_accessor :name, :errors
 
       def initialize name = nil
@@ -10,7 +12,11 @@ module Ruby
 
       def valid?
         if name
-          errors << "File #{name} does not exists" unless File.exist?(name)
+          if File.exist?(name)
+            errors << "File #{name} is not text file" unless text_file?(name)
+          else
+            errors << "File #{name} does not exists"
+          end
         else
           errors << 'No file path passed'
         end
