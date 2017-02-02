@@ -1,3 +1,6 @@
+# Description:
+https://github.com/Irostovsky/ruby-search/blob/master/Programming%20problem.pdf
+
 # Ruby::Search
 
 How to use this gem:
