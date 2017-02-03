@@ -5,21 +5,30 @@ class Ruby::Search::Indexer
   include Ruby::Search::Indexable
 
   def index
-    indexed_file = Ruby::Search::IndexedFile.new ARGV[0]
-    return puts indexed_file.errors unless indexed_file.valid?
-    save merge_index indexed_file.index
-    puts "Updated index: #{@index_file_name}"
-  end
-
-  private
-
-    def save hash
-      File.open(@index_file_name,"w") do |file|
-         file.write hash.to_yaml
+    ARGV.each do |filename|
+      puts "Process #{filename}"
+      open filename do |file|
+        file.read.index_sanitize.each do |word|
+          @current_index[word] ||= {}
+          @current_index[word][filename] ||= 0
+          @current_index[word][filename] += 1
+        end
       end
     end
 
-    def merge_index index
-      @current_index.deep_merge(index){ |key, this_val, other_val| other_val }
+    open(@index_file_name, "w") do |index|
+      index.write Marshal.dump(@current_index)
     end
+
+  end
+
+
+end
+
+class String
+  def index_sanitize
+    self.split.collect do |token|
+      token.downcase.gsub(/\W/, '')
+    end
+  end
 end

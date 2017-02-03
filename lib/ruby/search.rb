@@ -21,9 +21,9 @@ module Ruby
     end
 
     Ruby::Search.configure  do |config|
-      config.index_file_name = 'index.yml'
+      config.index_file_name = 'index.dat'
       config.and_symbol = 'AND'
-      config.sentence_words_count = 6
+      config.sentence_words_count = 1
     end
   end
 end
