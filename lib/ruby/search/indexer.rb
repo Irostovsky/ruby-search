@@ -6,13 +6,20 @@ class Ruby::Search::Indexer
 
   def index
     ARGV.each do |filename|
-      puts "Process #{filename}"
-      open filename do |file|
-        file.read.index_sanitize.each do |word|
-          @current_index[word] ||= {}
-          @current_index[word][filename] ||= 0
-          @current_index[word][filename] += 1
+      puts "Process #{filename}..."
+      file = Ruby::Search::IndexedFile.new filename
+      if file.valid?
+        @current_index.each{|k, v| @current_index[k].delete filename}
+        open filename do |file|
+          file.read.index_sanitize.each do |word|
+            @current_index[word] ||= {}
+            @current_index[word][filename] ||= 0
+            @current_index[word][filename] += 1
+          end
         end
+        puts "[Done]"
+      else
+        puts file.errors.join(' ')
       end
     end
 
@@ -21,7 +28,6 @@ class Ruby::Search::Indexer
     end
 
   end
-
 
 end
 
